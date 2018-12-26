@@ -2,7 +2,7 @@ package common
 
 import "fmt"
 
-var Categories = []string{"FOOD", "DRINKS/PARTY", "TRANSPORT", "SALARY", "RENT", "UTILITIES", "CLOTHES", "ELECTRONICS", "OTHER"}
+var Categories = []string{"FOOD", "DRINKS/PARTY", "TRANSPORT", "SALARY", "RENT", "UTILITIES", "CLOTHES", "ELECTRONICS", "CASH", "OTHER"}
 
 func CategoryTranslation(category int) (string, error) {
 	category = category - 1

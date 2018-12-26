@@ -38,8 +38,8 @@ func TagTransactions(config Config) error {
 	log.Printf("loaded %v txns", len(txns))
 
 	// tag txns
-	for _, txn := range txns {
-		err := tagTxn(db, txn)
+	for i, txn := range txns {
+		err := tagTxn(db, i, len(txns), txn)
 		if err != nil {
 			return fmt.Errorf("err tagging txn : %v", err.Error())
 		}
@@ -48,10 +48,10 @@ func TagTransactions(config Config) error {
 	return nil
 }
 
-func tagTxn(db *sqlx.DB, txn common.Txn) error {
+func tagTxn(db *sqlx.DB, i, total int, txn common.Txn) error {
 	fmt.Printf("%+v\n", txn)
 
-	category, err := readCategory(txn)
+	category, err := readCategory(i, total, txn)
 	if err != nil {
 		return fmt.Errorf("err reading category : %v", err.Error())
 	}
@@ -66,13 +66,14 @@ func tagTxn(db *sqlx.DB, txn common.Txn) error {
 	return nil
 }
 
-func readCategory(txn common.Txn) (string, error) {
+func readCategory(i, total int, txn common.Txn) (string, error) {
 	categoryName := ""
 	var category int
 	var err error
 	var input string
 	for categoryName == "" || err != nil {
 		clearScreen()
+		fmt.Printf("\n   %v / %v\n\n", i+1, total)
 		printTxn(txn)
 		if err != nil {
 			fmt.Printf("err reading category : %v\n\n", err.Error())
